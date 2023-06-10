@@ -14,3 +14,9 @@ try:
     import tkinter
 except ModuleNotFoundError:
     installer.install("tkinter")
+    import tkinter
+try:
+    import mcrcon
+except ModuleNotFoundError:
+    installer.install("mcrcon")
+    import mcrcon
