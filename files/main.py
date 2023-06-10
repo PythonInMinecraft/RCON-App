@@ -2,6 +2,7 @@
 
 #Internal imports
 import builder.lib_installer as inst
+import interract.service as serv
 
 installer = inst.LibInstaller()
 
@@ -21,3 +22,4 @@ except ModuleNotFoundError:
     installer.install("mcrcon")
     from mcrcon import MCRcon
 
+service = serv.Interface()

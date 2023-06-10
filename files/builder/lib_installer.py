@@ -7,4 +7,4 @@ import os
 class LibInstaller(object):
     def install(self, lib):
         print("Installing the missing librairy...")
-        os.system("pip install {0}")
+        os.system("pip install {0}".format(lib))
