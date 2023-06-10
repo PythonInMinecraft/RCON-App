@@ -46,6 +46,7 @@ class Interface(object):
         """When the OK button is pressed"""
         self.ip = self.e1.get()
         self.password = self.e2.get()
+        pass
 
         self.main()
 
@@ -58,8 +59,14 @@ class Interface(object):
         self.e1 = Entry(self.wind, width="30")
         self.e1.pack()
 
-        self.ok = Button(self.wind, text="OK")
+        f = Frame(self.wind)
+        f.pack()
+
+        self.ok = Button(f, text="OK", command=self.ok_main)
         self.ok.pack()
+
+        self.back = Button(f, text="BACK", command=self.ask_state)
+        self.back.pack()
 
         mainloop()
 
