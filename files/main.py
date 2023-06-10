@@ -11,12 +11,13 @@ try:
 except ModuleNotFoundError:
     raise RuntimeError
 try:
-    import tkinter
+    import tkinter as tk
 except ModuleNotFoundError:
     installer.install("tkinter")
-    import tkinter
+    import tkinter as tk
 try:
-    import mcrcon
+    from mcrcon import MCRcon
 except ModuleNotFoundError:
     installer.install("mcrcon")
-    import mcrcon
+    from mcrcon import MCRcon
+
