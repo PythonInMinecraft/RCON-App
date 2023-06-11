@@ -28,7 +28,7 @@ class Interface(object):
         self.l12 = Label(self.wind, text="Please enter the  rcon password")
         self.l12.pack()
 
-        self.e2 = Entry(self.wind, width=30)
+        self.e2 = Entry(self.wind, width=30, show="*")
         self.e2.pack()
 
         self.ok = Button(self.wind, text="OK", command=self.ok_ask)
