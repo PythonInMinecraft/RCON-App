@@ -2,8 +2,9 @@
 
 #Externals imports
 try:
-    from mcrcon import MCRcon
+    from mcrcon import MCRcon, MCRconException
     from tkinter import *
+    from tkinter import simpledialog as s
 except:
     print("Restart the app.")
     exit(-1)
@@ -46,9 +47,16 @@ class Interface(object):
         """When the OK button is pressed"""
         self.ip = self.e1.get()
         self.password = self.e2.get()
-        pass
 
-        self.main()
+        try:
+            self.rcon = MCRcon(self.ip, self.password)
+            self.rcon.connect()
+            self.rcon.command("tag @a list")    #check the connection
+            self.main()
+        except MCRconException:
+            s.messagebox.showerror("Error", "Failed to login")
+        self.rcon.disconnect()
+
 
     def main(self):
         """Main GUI"""
@@ -56,22 +64,27 @@ class Interface(object):
         self.l1 = Label(self.wind, text="Command")
         self.l1.pack()
 
-        self.e1 = Entry(self.wind, width="30")
-        self.e1.pack()
+        self.ef = Frame(self.wind)
+        self.ef.pack()
+
+        self.l = Label(self.ef, text="/")
+        self.l.pack(side=LEFT)
+
+        self.e1 = Entry(self.ef, width="30")
+        self.e1.pack(side=LEFT)
 
         f = Frame(self.wind)
         f.pack()
 
         self.ok = Button(f, text="OK", command=self.ok_main)
-        self.ok.pack()
+        self.ok.pack(side=LEFT)
 
         self.back = Button(f, text="BACK", command=self.ask_state)
-        self.back.pack()
+        self.back.pack(side=LEFT)
 
         mainloop()
 
     def ok_main(self):
         """When the OK main button is pressed"""
-        with MCRcon(self.ip, self.password) as rcon:
-            resp = rcon.command(self.e1.get())
-            print(resp)
+        resp = self.rcon.command(self.e1.get())
+        print(resp)
