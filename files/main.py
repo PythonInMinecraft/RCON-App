@@ -20,6 +20,16 @@ try:
 except ModuleNotFoundError:
     installer.install("mcrcon")
     from mcrcon import MCRcon
+try:
+    from threading import Thread
+except ModuleNotFoundError:
+    installer.install("threading")
+    from threading import Thread
+try:
+    from time import *
+except ModuleNotFoundError:
+    installer.install("time")
+    from time import *
 
 
 import interract.service as serv
