@@ -57,7 +57,7 @@ class Interface(object):
 
         try:
             self.rcon = MCRcon(self.ip, self.password)
-            self.connect_()
+            self.rcon.connect()
             self.rcon.command("tag @a list")    #check the connection
             self.main()
             self.rcon.disconnect()
@@ -68,37 +68,6 @@ class Interface(object):
             s.messagebox.showerror("Error", "Server timed out.\nDid you enter the good ip ?")
         except OSError:
             s.messagebox.showerror("Error", "Invalid address.")
-
-    def connect_(self):
-        """Connect to server rcon"""
-        self.wind.attributes("-disabled", True)
-        self.wait = Tk()
-        self.wait.title("Connecting...")
-
-        Label(self.wait, text="Connecting to the server...\nPlease wait.\nDON'T CLOSE THIS WINDOW").pack()
-
-        self.wait.attributes("-topmost", True)
-
-        self.wait.resizable(False, False)
-
-        self.thread = Thread(target=self.connect_thread_)
-
-        self.thread.start()
-
-        mainloop()
-
-        self.wind.attributes("-disabled", False)
-
-    def connect_thread_(self):
-        """#Thread"""
-        sleep(0.5)
-        try:
-            self.rcon.connect()
-        except TimeoutError:
-            s.messagebox.showerror("Error", "Server timed out.\nDid you enter the good ip ?")
-        except OSError:
-            s.messagebox.showerror("Error", "Invalid address.")
-        self.wait.destroy()
 
 
     def main(self):
@@ -156,3 +125,31 @@ class Interface(object):
         txt = self.e1.get() + " :\n" + text + "\n\n"
         self.scroll.insert(END, txt)
         self.scroll.configure(state="disabled")
+
+import tkinter as tk
+
+class Wait(tk.Tk):
+    def __init__(self, rcon:MCRcon):
+        super().__init__()
+        self.title("Connecting")
+        self.rcon = rcon
+
+        self.show_please_wait_window()
+        self.execute_background_process()
+
+    def show_please_wait_window(self):
+        self.please_wait_window = tk.Toplevel(self)
+        label = tk.Label(self.please_wait_window, text="Connecting to server RCON...\nPlease wait.")
+        label.pack()
+
+    def update_ui(self):
+        # Mettre à jour l'interface utilisateur en fonction de l'état du processus
+        pass
+
+    def execute_background_process(self):
+        self.rcon.connect()
+        self.please_wait_window.destroy()
+
+if __name__ == "__main__":
+    app = MyApp()
+    app.mainloop()
